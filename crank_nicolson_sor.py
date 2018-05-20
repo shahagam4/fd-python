@@ -74,6 +74,8 @@ def Option_Value_3D_cn_sor(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS,
             Err=0
             for i in range(NAS-1):
                 temp[0, i]=V[i+1, k]+(omega/Diag[0, i])*(q[i]-SuperDiag[0, i]*V[i+2, k]-Diag[0, i]*V[i+1, k]-SubDiag[0, i]*V[i, k])
+                if EType=="Y":
+                    temp[0, i]=max(temp[0, i], Payoff[0,i])
                 Err=Err+(temp[0, i]-V[i+1, k])**2
                 V[i+1, k]=temp[0, i]
             print(Err)
