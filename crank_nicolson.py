@@ -36,7 +36,7 @@ def Option_Value_3D_cn(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS, NTS
     Diag[0, NAS-2]=1-B[0, NAS-2]-2*C[0, NAS-2]
     SuperDiag=np.zeros((1,NAS-1))
     for i in range(NAS-2):
-        SubDiag[0, i]=-C[0, i]
+        SuperDiag[0, i]=-C[0, i]
 
     MR=np.zeros((NAS-1,NAS+1))
     for i in range(NAS-1):
@@ -61,7 +61,7 @@ def Option_Value_3D_cn(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS, NTS
         r=np.zeros((1,NAS-1))
         r[0, 0]=-A[0, 0]*V[0, k]
         q=np.matmul(MR, V[:,k-1])
-        q[0]=q[0]+r[0,0]
+        q[0]=q[0]-r[0,0]
 
         V[1:NAS,k]=np.linalg.solve(ML,q)
 

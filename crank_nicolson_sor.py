@@ -37,7 +37,7 @@ def Option_Value_3D_cn_sor(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS,
     Diag[0, NAS-2]=1-B[0, NAS-2]-2*C[0, NAS-2]
     SuperDiag=np.zeros((1,NAS-1))
     for i in range(NAS-2):
-        SubDiag[0, i]=-C[0, i]
+        SuperDiag[0, i]=-C[0, i]
 
     MR=np.zeros((NAS-1,NAS+1))
     for i in range(NAS-1):
@@ -56,14 +56,13 @@ def Option_Value_3D_cn_sor(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS,
         Payoff[0,i] = V[i, 0]
 
     for k in range(1,NTS+1):
-        print(k)
         V[0, k] = V[0, k-1]*(1-Int_Rate*dt)
         if EType=="Y":
             V[0, k] = max(V[0,k],Payoff[0,0])
         r=np.zeros((1,NAS-1))
         r[0, 0]=-A[0, 0]*V[0, k]
         q=np.matmul(MR, V[:,k-1])
-        q[0]=q[0]+r[0,0]
+        q[0]=q[0]-r[0,0]
         
         temp=np.zeros((1, NAS-1))
         tol=0.001
@@ -78,7 +77,6 @@ def Option_Value_3D_cn_sor(Vol, Int_Rate, PType, Strike, Expiration, EType, NAS,
                     temp[0, i]=max(temp[0, i], Payoff[0,i])
                 Err=Err+(temp[0, i]-V[i+1, k])**2
                 V[i+1, k]=temp[0, i]
-            print(Err)
         V[NAS, k] = 2*V[NAS-1, k]-V[NAS-2, k]
         if EType=="Y":
             for i in range(NAS+1):
